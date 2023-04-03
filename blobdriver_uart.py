@@ -1,4 +1,6 @@
-# Untitled - By: jiawei - Thu Feb 23 2023
+# blobdriver_uart.py
+# Author: Michael Fitzgerald (mtf323@lehigh.edu)
+# Year: 2023
 
 import math
 import sensor, image, time, pyb
