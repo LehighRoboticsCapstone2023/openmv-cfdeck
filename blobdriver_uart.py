@@ -20,7 +20,7 @@ MIN_AREA = 100
 while(True):
     clock.tick()
     img = sensor.snapshot()
-    #print(clock.fps())
+    print(clock.fps())
 
     blobs = img.find_blobs([threshold], areaThreshold=5000, merge=True) # detect blobs (red ball)
     (maxBlobX, maxBlobY, maxBlobW, maxBlobH) = (0,0,0,0)
