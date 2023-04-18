@@ -14,10 +14,18 @@ sensor.skip_frames(time = 2000)
 
 # init UART and timer
 clock = time.clock()
-uart = UART(1, 115200, timeout_char=100, parity=None)
+uart = UART(3, 115200, timeout_char=100, parity=None)
 
 threshold = (37, 73, 22, 81, 18, 64)
 MIN_AREA = 100
+
+# OpenMV OV7725 sensor focal length: 311px (both axes)
+
+FOCAL_LEN = 311 # in pixels
+BALLOON_WIDTH = 0.3 # in meters
+
+def calc_dist(pix_width):
+    return BALLOON_WIDTH * FOCAL_LEN / pix_width
 
 while(True):
     clock.tick()
@@ -43,7 +51,8 @@ while(True):
     blobY = (2*maxBlobY + maxBlobH) / 2
     x = int((blobX - 160) * 127 / 160)
     y = int((blobY - 120) * 127 / 120)
-    z = int(255 / math.sqrt(maxBlobArea)) if (maxBlobArea > 0) else 0 # stupid speed formula (Z thrust)
+    blobRadius = math.sqrt(maxBlobArea / math.pi)
+    z = int(10*calc_dist(2 * blobRadius)) if (blobRadius > 0) else 0 # distance in 1/10 meters
     if z == 0:
         (x,y) = (0,0)
     #print(speed)
